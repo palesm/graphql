@@ -1,49 +1,32 @@
 package com.graphql.springboot.datafetchers;
 
-import com.google.common.collect.ImmutableMap;
+import com.graphql.springboot.entity.Author;
+import com.graphql.springboot.entity.Book;
 import graphql.schema.DataFetcher;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class GraphQLDataFetchers {
 
-    private static List<Map<String, String>> books = Arrays.asList(
-            ImmutableMap.of("id", "book-1",
-                    "name", "Harry Potter and the Philosopher's Stone",
-                    "pageCount", "223",
-                    "authorId", "author-1"),
-            ImmutableMap.of("id", "book-2",
-                    "name", "Moby Dick",
-                    "pageCount", "635",
-                    "authorId", "author-2"),
-            ImmutableMap.of("id", "book-3",
-                    "name", "Interview with the vampire",
-                    "pageCount", "371",
-                    "authorId", "author-3")
-    );
+    private static Author author1 = Author.builder().id(1).name("Mitch Albom").build();
+    private static Author author2 = Author.builder().id(2).name("Stephen Hawking").build();
+    private static List<Author> authors = Arrays.asList(author1, author2);
 
-    private static List<Map<String, String>> authors = Arrays.asList(
-            ImmutableMap.of("id", "author-1",
-                    "firstName", "Joanne",
-                    "lastName", "Rowling"),
-            ImmutableMap.of("id", "author-2",
-                    "firstName", "Herman",
-                    "lastName", "Melville"),
-            ImmutableMap.of("id", "author-3",
-                    "firstName", "Anne",
-                    "lastName", "Rice")
-    );
+    private static Book book1 = Book.builder().id(1).title("Tuesdays with Morrie").pageCount(192).author(author1).build();
+    private static Book book2 = Book.builder().id(2).title("A Brief History of Time").pageCount(256).author(author2).build();
+    private static Book book3 = Book.builder().id(3).title("Brief Answers to the Big Questions").pageCount(256).author(author1).build();
+    private static List<Book> books = Arrays.asList(book1, book2, book3);
+
 
     public DataFetcher getBookByIdDataFetcher() {
         return dataFetchingEnvironment -> {
-            String bookId = dataFetchingEnvironment.getArgument("id");
+            int bookId = Integer.parseInt(dataFetchingEnvironment.getArgument("id"));
             return books
                     .stream()
-                    .filter(book -> book.get("id").equals(bookId))
+                    .filter(book -> book.getId().equals(bookId))
                     .findFirst()
                     .orElse(null);
         };
@@ -51,11 +34,11 @@ public class GraphQLDataFetchers {
 
     public DataFetcher getAuthorDataFetcher() {
         return dataFetchingEnvironment -> {
-            Map<String,String> book = dataFetchingEnvironment.getSource();
-            String authorId = book.get("authorId");
+            Book book = dataFetchingEnvironment.getSource();
+            int authorId = book.getAuthor().getId();
             return authors
                     .stream()
-                    .filter(author -> author.get("id").equals(authorId))
+                    .filter(author -> author.getId().equals(authorId))
                     .findFirst()
                     .orElse(null);
         };
@@ -63,8 +46,12 @@ public class GraphQLDataFetchers {
 
     public DataFetcher getPageCountDataFetcher() {
         return dataFetchingEnvironment -> {
-            Map<String,String> book = dataFetchingEnvironment.getSource();
-            return book.get("pageCount");
+            Book book = dataFetchingEnvironment.getSource();
+            return book.getPageCount();
         };
+    }
+
+    public DataFetcher getBooksDataFetcher() {
+        return dataFetchingEnvironment -> books;
     }
 }

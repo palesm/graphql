@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.graphql</groupId>
-    <artifactId>backend</artifactId>
+    <artifactId>springboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>backend</name>
+    <name>springboot</name>
     <description>GraphQL practice</description>
     <properties>
         <java.version>1.8</java.version>
