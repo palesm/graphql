@@ -53,8 +53,10 @@ public class GraphQLProvider {
                 .type(newTypeWiring("Query")
                         .dataFetcher("bookById",graphQLDataFetchers.getBookByIdDataFetcher())
                         .dataFetcher("books", graphQLDataFetchers.getBooksDataFetcher())
-                )
-                .type(newTypeWiring("Book")
+                        .dataFetcher("authors", graphQLDataFetchers.getAuthorsDataFetcher())
+                ).type(newTypeWiring("Mutation")
+                        .dataFetcher("addAuthor", graphQLDataFetchers.addAuthorDataFetcher())
+                ).type(newTypeWiring("Book")
                         .dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher())
                         .dataFetcher("pageCount", graphQLDataFetchers.getPageCountDataFetcher())
                 ).build();
