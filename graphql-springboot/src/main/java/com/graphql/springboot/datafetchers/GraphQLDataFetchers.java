@@ -18,11 +18,11 @@ public class GraphQLDataFetchers {
 
     private static Book book1 = Book.builder().id(1).title("Tuesdays with Morrie").pageCount(192).author(author1).build();
     private static Book book2 = Book.builder().id(2).title("A Brief History of Time").pageCount(256).author(author2).build();
-    private static Book book3 = Book.builder().id(3).title("Brief Answers to the Big Questions").pageCount(256).author(author1).build();
+    private static Book book3 = Book.builder().id(3).title("Brief Answers to the Big Questions").pageCount(256).author(author2).build();
     private static List<Book> books = new ArrayList<>(Arrays.asList(book1, book2, book3));
 
 
-    public DataFetcher getBookByIdDataFetcher() {
+    public DataFetcher<Book> getBookByIdDataFetcher() {
         return dataFetchingEnvironment -> {
             int bookId = Integer.parseInt(dataFetchingEnvironment.getArgument("id"));
             return books
@@ -33,7 +33,7 @@ public class GraphQLDataFetchers {
         };
     }
 
-    public DataFetcher getAuthorDataFetcher() {
+    public DataFetcher<Author> getAuthorDataFetcher() {
         return dataFetchingEnvironment -> {
             Book book = dataFetchingEnvironment.getSource();
             int authorId = book.getAuthor().getId();
@@ -45,22 +45,15 @@ public class GraphQLDataFetchers {
         };
     }
 
-    public DataFetcher getPageCountDataFetcher() {
-        return dataFetchingEnvironment -> {
-            Book book = dataFetchingEnvironment.getSource();
-            return book.getPageCount();
-        };
-    }
-
-    public DataFetcher getBooksDataFetcher() {
+    public DataFetcher<List<Book>> getBooksDataFetcher() {
         return dataFetchingEnvironment -> books;
     }
 
-    public DataFetcher getAuthorsDataFetcher() {
+    public DataFetcher<List<Author>> getAuthorsDataFetcher() {
         return dataFetchingEnvironment -> authors;
     }
 
-    public DataFetcher addAuthorDataFetcher() {
+    public DataFetcher<Author> addAuthorDataFetcher() {
         return dataFetchingEnvironment -> {
             Author author = new Author();
             author.setId(Integer.parseInt((String) dataFetchingEnvironment.getArguments().get("id")));

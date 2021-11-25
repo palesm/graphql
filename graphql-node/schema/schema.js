@@ -7,7 +7,7 @@ const BookType = new GraphQLObjectType({
    name: 'Book',
    fields: () => ({
        id: {type: GraphQLString},
-       name: {type: GraphQLString},
+       title: {type: GraphQLString},
        genre: {type: GraphQLString},
        author: {
            type: AuthorType,
@@ -62,14 +62,14 @@ const RootQuery = new GraphQLObjectType({
 
 //dummy data
 let books = [
-    {id: '1',name:'Burn MF', genre: 'Horror', authorId: '1'},
-    {id: '2',name:'Romeo', genre: 'Romance', authorId: '1'},
-    {id: '3',name:'SW', genre: 'Sci-fi', authorId: '2'},
+    {id: '1',title:'The Silmarillion', genre: 'Fantasy', authorId: '1'},
+    {id: '2',title:'The Lord of the Rings', genre: 'Fantasy', authorId: '1'},
+    {id: '3',title:'Thus Spoke Zarathustra', genre: 'Philosophy', authorId: '2'},
 ]
 
 let authors = [
-    {id: '1',name:'Zulcsi'},
-    {id: '2',name:'Bobe baba'},
+    {id: '1',name:'J. R. R. Tolkien'},
+    {id: '2',name:'Friedrich Nietzsche'},
 ]
 
 module.exports = new GraphQLSchema({
